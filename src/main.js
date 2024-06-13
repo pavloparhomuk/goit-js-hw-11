@@ -27,15 +27,15 @@ document.querySelector('form').addEventListener('submit', event => {
         render(hits, gallery);
       }
       gallery.classList.remove('loader');
+      event.target.reset();
     })
     .catch(error => {
       gallery.classList.remove('loader');
       gallery.innerHTML =
         'Something went wrong. <br/>Please, check your connection and try again.';
       console.error(error);
+      event.target.reset();
     });
-
-  event.target.reset();
 });
 
 const colorSwitcher = document.querySelector('.slide');
