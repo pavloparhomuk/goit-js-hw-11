@@ -6,6 +6,10 @@ import pixabayApi from './js/pixabay-api';
 import render from './js/render-functions';
 
 const gallery = document.querySelector('.gallery');
+const loader = document.createElement('div');
+loader.className = 'loader';
+gallery.appendChild(loader);
+
 const errMessage = {
   position: 'topRight',
   theme: 'dark',
@@ -16,21 +20,22 @@ const errMessage = {
 
 document.querySelector('form').addEventListener('submit', event => {
   event.preventDefault();
-  gallery.classList.add('loader');
+  loader.style.display = 'flex';
   gallery.innerHTML = '';
+  gallery.appendChild(loader);
 
   pixabayApi(event.target.searchrequest.value)
     .then(({ hits }) => {
+      loader.style.display = 'none';
       if (hits.length === 0) {
         iziToast.error(errMessage);
       } else {
         render(hits, gallery);
       }
-      gallery.classList.remove('loader');
       event.target.reset();
     })
     .catch(error => {
-      gallery.classList.remove('loader');
+      loader.style.display = 'none';
       gallery.innerHTML =
         'Something went wrong. <br/>Please, check your connection and try again.';
       console.error(error);
